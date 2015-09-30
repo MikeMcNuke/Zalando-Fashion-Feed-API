@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+}
+
+a {
+    color: #666;
+}
+
+fieldset {
+    margin: 1em;
+}
+
+legend {
+    font-weight: bold;
+}
+
+.login label {
+    display: block;
+    padding-bottom: 0.5em;
+}
+
+.login input {
+    margin-bottom: 1em;
+}
+
+.login input[type="submit"] {
+    display: block;
+    margin-top: 1em;
+}
+
+.profile,
+.profile .detail {
+    display: none;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    padding: 0.25em;
+}
+
+.topBrands {
+    display: none;
+}

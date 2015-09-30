@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<title>Zalando - myFeed API Example</title>
+<link rel="stylesheet" href="css/example.css">
+<body>
+<div class="login">
+    <form action="./" method="post">
+        <fieldset>
+            <legend>Enter your username and password</legend>
+            <p>If you don't have a username at zalando, please register one at this place: <a href="https://www.zalando.de/login" title="Zalando Login Page">https://www.zalando.de/login</a>!</p>
+            <label for="username">Username</label><input type="email" id="username" name="username">
+            <label for="username">Password</label><input type="password" id="password" name="password">
+            <input type="submit" value="Login" id="login" name="login">
+        </fieldset>
+    </form>
+</div>
+<div class="profile">
+    <fieldset>
+        <legend>Retrieve User Profile</legend>
+        <p>With the authentification token you are now able to retrieve the whole profile of the logged in user. Press 'Retrieve Profile'.</p>
+        <button id="getProfile">Retrieve Profile</button>
+        <div class="detail">
+            <ul>
+                <li class="profileName"><strong>Name: </strong></li>
+                <li class="profileEmail"><strong>Email: </strong></li>
+                <li class="profileGender"><strong>Gender: </strong></li>
+                <li class="profileFeedId"><strong>Feed ID: </strong></li>
+                <li class="profileId"><strong>Profile ID: </strong></li>
+            </ul>
+        </div>
+    </fieldset>
+</div>
+<div class="topBrands">
+    <fieldset>
+        <legend>General Topbrands</legend>
+        <p>Get the general top brands from Zalando.</p>
+        <button id="getProfile">Retrieve Profile</button>
+        <div class="detail">
+            
+        </div>
+    </fieldset>
+</div>
+<div class="recommendedBrands">
+    
+</div>
+<div class="feed">
+    
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="js/example.js"></script>
+</body>
+</html>
