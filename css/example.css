@@ -44,6 +44,26 @@ li {
     padding: 0.25em;
 }
 
-.topBrands {
+.topBrands,
+.topBrands .detail {
     display: none;
+}
+
+.topBrandList li {
+    border: 1px solid #efefef;
+    display: block;
+    float: left;
+    font-size: 10px;
+    letter-spacing: 0;
+    height: 10em;
+    margin: 0.5em;
+    text-align: center;
+    width: 10em;
+    box-shadow: 1px 0px 1px #ccc;
+}
+
+.topBrandList img {
+    display: block;
+    height: auto;
+    width: 8em;
 }

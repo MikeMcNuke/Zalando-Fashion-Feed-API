@@ -1,14 +1,54 @@
 var userProfile = {};
 
 /**
+ * displayTopBrands
+ * 
+ * Displays the top brands in the webpage
+ * @param topBrands The Items in the response JSON
+ */
+function displayTopBrands (topBrands) {
+    var $topBrand = $('.topBrands .detail');
+    var $topBrandList = $('.topBrandList');
+    
+    $topBrand.prepend('<p>Retrieved ' + topBrands.length + ' elements</p>');
+
+    $.each(topBrands, function (index, item) {
+        $topBrandList.append('<li><img href="' + item.brand.umage_url + '"><br>' + item.brand.name + '</li>')
+    });
+    $('.topBrands .detail').slideDown('slow');
+}
+
+/**
+ * getTopBrands
+ * 
+ * Retrieves the not personalized top brands
+ * from the zalando myFeed API
+ */
+function getTopBrands () {
+    $.ajax({
+        type: "GET",
+        url: "https://api.dz.zalan.do/feeds/MALE/sources/brand_reco/streams/top/items",
+        headers: {
+            Accept: "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        success: function (data) {
+            displayTopBrands(data.items);
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
+
+/**
  * getProfile()
  * 
  * Retrieves the profileinformation with feed id for
  * the currently authenticated user.
  */
 function getProfile () {
-    window.console.log(userProfile);
-
     $.ajax({
         type: "GET",
         url: "https://api.dz.zalan.do/auth/me",
@@ -17,17 +57,14 @@ function getProfile () {
             Authorization: userProfile.access_type + " " + userProfile.access_token
         },
         success: function (data) {
-            $('.login fieldset').append('<small>Successfully received profile.</small>');
             userProfile.email = data.email;
             userProfile.feed_id = data.feed_id;
             userProfile.gender = data.gender;
             userProfile.name = data.name;
-            userProfile.profile_id = data.profile_id;
             $('.profileName').append(userProfile.name);
             $('.profileEmail').append(userProfile.email);
             $('.profileGender').append(userProfile.gender);
             $('.profileFeedId').append(userProfile.feed_id);
-            $('.profileId').append(userProfile.profile_id);
             $('.profile .detail').fadeIn();
         },
         error: function (data) {
@@ -60,7 +97,7 @@ function login () {
             $('.login fieldset').append('<small>Successfully login. Token received.</small>');
             userProfile.access_token = data.access_token;
             userProfile.access_type = data.access_type;
-            $('.login form').fadeOut();
+            $('.login form').slideUp('slow');
             $('.profile').fadeIn();
             $('.topBrands').fadeIn();
         },
@@ -75,4 +112,5 @@ function login () {
 $(document).ready(function () {
     $('#login').on('click', login);
     $('#getProfile').on('click', getProfile);
+    $('#getTopBrands').on('click', getTopBrands);
 });
