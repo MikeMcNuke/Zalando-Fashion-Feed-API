@@ -30,7 +30,10 @@ legend {
     margin-top: 1em;
 }
 
-.profile, .profile .detail {
+.profile, .profile .detail,
+.topBrands, .topBrands .detail,
+.recoBrands, .recoBrands .detail,
+.feed, .myFeedList {
     display: none;
 }
 
@@ -43,18 +46,15 @@ li {
     padding: 0.25em;
 }
 
-.topBrands, .topBrands .detail {
-    display: none;
-}
-
 .topBrandList li,
-.recoList li {
+.recoList li,
+.myFeedList li {
     border: 1px solid #ccc;
     display: block;
     float: left;
     font-size: 10px;
     letter-spacing: 0;
-    height: 10em;
+    height: 11.5em;
     margin: 0.5em;
     text-align: center;
     width: 10em;
@@ -62,12 +62,62 @@ li {
 }
 
 .topBrandList img,
-.recoList img {
+.recoList img,
+.myFeedList img {
     display: block;
     height: auto;
+    margin: 0 1em 0 1em;
     width: 8em;
 }
 
-.recoBrands, .recoBrands .detail {
-    display: none;
+.myFeedList li {
+    height: 20em;
+    position: relative;
+}
+
+.myFeedList img {
+    margin: 0.2em auto 0.5em auto;
+    width: 9.5em;
+}
+
+.brandContainer {
+    display: table-cell;
+    height: 9em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.myFeedList .brandContainer img {
+    margin-left: 0.25em;
+}
+
+.opinion {
+    position: absolute;
+    bottom: 0.5em;
+    width: 90%;
+    padding: 0 5% 0 5%;
+    margin: 0.9em auto 0 auto;
+}
+
+.dislikeArticle, .likeArticle,
+.dislikeBrand, .likeBrand {
+    background: url('../img/icons.png') 20px 20px;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 20px;
+    width: 22px;
+}
+
+.likeArticle,
+.likeBrand {
+    float:right;
+    background-position: 0 0;
+}
+
+.infoBox {
+    padding: 1em;
+    font-size: 12px;
+    color: #fff;
+    background-color: #bbb;
 }

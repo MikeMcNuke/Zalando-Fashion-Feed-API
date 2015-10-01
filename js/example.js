@@ -1,5 +1,218 @@
 var userProfile = {};
 
+/**
+ * brandLike
+ * 
+ * Likes a brand and fades it out
+ * @param brandId
+ */
+function brandLike (brandId) {
+    $.ajax({
+        type: "PUT",
+        url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/brand%3A' + brandId,
+        headers: {
+            'Content-Type': "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        data: JSON.stringify({"opinion": "LIKE"}),
+        success: function () {
+            $('#' + brandId).find('.dislikeBrand').fadeTo('slow',0);
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
+
+/**
+ * brandDislike
+ * 
+ * Dislikes the brand and fades out the brand
+ * @param brandId
+ */
+function brandDislike (brandId) {
+    $.ajax({
+        type: "PUT",
+        url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/brand%3A' + brandId,
+        headers: {
+            'Content-Type': "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        data: JSON.stringify({"opinion": "DISLIKE"}),
+        success: function () {
+            $('#' + brandId).closest('li').slideUp('slow');
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
+
+/**
+ * articleLike
+ * 
+ * Likes an article and removes dislike button
+ * @param articleId
+ */
+function articleLike (articleId) {
+    $.ajax({
+        type: "PUT",
+        url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/article%3A' + articleId,
+        headers: {
+            'Content-Type': "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        data: JSON.stringify({"opinion": "LIKE"}),
+        success: function () {
+            $('#' + articleId).find('.dislikeArticle').fadeTo('slow',0);
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
+
+/**
+ * articleDislike
+ * 
+ * Dislikes an article and fades it out
+ * @param articleId
+ */
+function articleDislike (articleId) {
+    $.ajax({
+        type: "PUT",
+        url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/article%3A' + articleId,
+        headers: {
+            'Content-Type': "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        data: JSON.stringify({"opinion": "DISLIKE"}),
+        success: function () {
+            $('#' + articleId).closest('li').fadeTo('slow',0.25);
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
+
+/**
+ * displayBrand
+ * 
+ * Outputs a single brand to an li element
+ * @param $element ul element to attach to
+ * @param item brand object
+ */
+function displayBrand ($element, item) {
+    $element.append('<li><div class="brandContainer"><img src="' + item.brand.umage_url + '"></div>' + item.brand.name + 
+        '<div class="opinion" id="' + item.id + '"><a class="dislikeBrand"></a><a class="likeBrand"></a></div></li>');
+}
+
+/**
+ * displayArticleComposition
+ *
+ * Outputs a single article to an li element
+ * @param $element ul element to fill
+ * @param item article_composition object
+ */
+function displayArticleComposition ($element, item) {
+    $element.append('<li><img src="' + item.article_composition.umage_url +
+        '" alt="' + item.article_composition.style_name + '">' +
+        item.article_composition.style_name + '</li>');
+}
+
+/**
+ * displaySingleArticle
+ * 
+ * Outputs a single article to an li element
+ * @param $element ul element to fill
+ * @param item single article object
+ */
+function displaySingleArticle ($element, item) {
+    $element.append('<li><img src="' + item.article.umage_url +
+        '" alt="' + item.article.description + '">' +
+        item.article.description + '<br>' + item.article.price.original_price.formatted +
+        '<div class="opinion" id="' + item.id + '"><a class="dislikeArticle"></a><a class="likeArticle"></a></div></li>');
+}
+
+/**
+ * addLikeDislikeEvents
+ * 
+ * Helper function for registering events
+ */
+function addLikeDislikeEvents() {
+    $('.dislikeArticle').on('click', function () {
+        var articleId = $(this).parent().attr('id');
+        articleDislike(articleId);
+    });
+    $('.likeArticle').on('click', function () {
+        var articleId = $(this).parent().attr('id');
+        articleLike(articleId);
+    });
+    $('.dislikeBrand').on('click', function () {
+        var brandId = $(this).parent().attr('id');
+       brandDislike(brandId);
+    });
+    $('.likeBrand').on('click', function () {
+        var brandId = $(this).parent().attr('id');
+        brandLike(brandId);
+    });
+}
+
+/**
+ * displayPersonalReco
+ *
+ * Displays the top brands in the webpage. The webpage was run
+ * on an secured connection, else the images are unavailable
+ * @param myFeed The Items in the response JSON
+ */
+function displayMyFeed (myFeed) {
+    var $myFeed = $('.feed .detail');
+    var $myFeedList = $('.myFeedList');
+
+    $myFeed.prepend('<p>Retrieved ' + myFeed.length + ' elements</p>');
+
+    $.each(myFeed, function (index, item) {
+        if (item.article_composition !== undefined) {
+            displayArticleComposition($myFeedList, item);
+        } else if (item.article !== undefined) {
+            displaySingleArticle($myFeedList, item);
+        } else if (item.brand !== undefined) {
+            displayBrand($myFeedList, item);
+        }
+    });
+    $myFeedList.slideDown('slow');
+    addLikeDislikeEvents();
+}
+
+/**
+ * getMyFeed
+ *
+ * Retrieves the personal feed with brands, products, reco...
+ * from the zalando myFeed API
+ */
+function getMyFeed () {
+    $.ajax({
+        type: "GET",
+        url: "https://api.dz.zalan.do/feeds/" + userProfile.feed_id + "/items",
+        headers: {
+            Accept: "application/x.zalando.myfeed+json;version=2",
+            Authorization: userProfile.access_type + " " + userProfile.access_token
+        },
+        success: function (data) {
+            $('#getFeed').remove();
+            displayMyFeed(data.items);
+        },
+        error: function (data) {
+            window.console.log('ERROR');
+            window.console.log(data);
+        }
+    });
+}
 
 /**
  * displayPersonalReco
@@ -15,7 +228,7 @@ function displayPersonalReco (personalReco) {
     $recoBrand.prepend('<p>Retrieved ' + personalReco.length + ' elements</p>');
 
     $.each(personalReco, function (index, item) {
-        $recoList.append('<li><img href="' + item.brand.umage_url + '"><br>' + item.brand.name + '</li>')
+        $recoList.append('<li><div class="brandContainer"><img src="' + item.brand.umage_url + '"></div>' + item.brand.name + '</li>');
     });
     $recoBrand.slideDown('slow');
 }
@@ -59,7 +272,7 @@ function displayTopBrands (topBrands) {
     $topBrand.prepend('<p>Retrieved ' + topBrands.length + ' elements</p>');
 
     $.each(topBrands, function (index, item) {
-        $topBrandList.append('<li><img href="' + item.brand.umage_url + '"><br>' + item.brand.name + '</li>')
+        $topBrandList.append('<li><div class="brandContainer"><img src="' + item.brand.umage_url + '"></div>' + item.brand.name + '</li>');
     });
     $topBrand.slideDown('slow');
 }
@@ -112,7 +325,7 @@ function getProfile () {
             $('.profileEmail').append(userProfile.email);
             $('.profileGender').append(userProfile.gender);
             $('.profileFeedId').append(userProfile.feed_id);
-            $('.profile .detail').fadeIn();
+            $('.profile .detail, .recoBrands, .feed').fadeIn();
             $('#getProfile').remove();
         },
         error: function (data) {
@@ -146,7 +359,7 @@ function login () {
             userProfile.access_token = data.access_token;
             userProfile.access_type = data.access_type;
             $('.login form').slideUp('slow');
-            $('.profile, .topBrands, .recoBrands').fadeIn();
+            $('.profile, .topBrands').fadeIn();
         },
         error: function (data) {
             window.console.log('ERROR');
@@ -161,4 +374,5 @@ $(document).ready(function () {
     $('#getProfile').on('click', getProfile);
     $('#getTopBrands').on('click', getTopBrands);
     $('#getReco').on('click', getPersonalReco);
+    $('#getFeed').on('click', getMyFeed);
 });
