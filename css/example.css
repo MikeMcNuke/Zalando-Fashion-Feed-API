@@ -30,8 +30,7 @@ legend {
     margin-top: 1em;
 }
 
-.profile,
-.profile .detail {
+.profile, .profile .detail {
     display: none;
 }
 
@@ -44,13 +43,13 @@ li {
     padding: 0.25em;
 }
 
-.topBrands,
-.topBrands .detail {
+.topBrands, .topBrands .detail {
     display: none;
 }
 
-.topBrandList li {
-    border: 1px solid #efefef;
+.topBrandList li,
+.recoList li {
+    border: 1px solid #ccc;
     display: block;
     float: left;
     font-size: 10px;
@@ -59,11 +58,16 @@ li {
     margin: 0.5em;
     text-align: center;
     width: 10em;
-    box-shadow: 1px 0px 1px #ccc;
+    box-shadow: 0px 1px 3px #eee;
 }
 
-.topBrandList img {
+.topBrandList img,
+.recoList img {
     display: block;
     height: auto;
     width: 8em;
+}
+
+.recoBrands, .recoBrands .detail {
+    display: none;
 }
