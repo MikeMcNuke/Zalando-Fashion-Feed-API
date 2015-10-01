@@ -101,7 +101,7 @@ li {
 
 .dislikeArticle, .likeArticle,
 .dislikeBrand, .likeBrand {
-    background: url('../img/icons.png') 20px 20px;
+    background: url('../img/icons.png') 44px 20px;
     cursor: pointer;
     display: block;
     float: left;
@@ -113,6 +113,10 @@ li {
 .likeBrand {
     float:right;
     background-position: 0 0;
+}
+
+.liked {
+    background-position: 22px 0;
 }
 
 .infoBox {

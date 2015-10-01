@@ -17,6 +17,7 @@ function brandLike (brandId) {
         data: JSON.stringify({"opinion": "LIKE"}),
         success: function () {
             $('#' + brandId).find('.dislikeBrand').fadeTo('slow',0);
+            $('#' + brandId).find('.likeBrand').addClass('liked');
         },
         error: function (data) {
             window.console.log('ERROR');
@@ -41,7 +42,7 @@ function brandDislike (brandId) {
         },
         data: JSON.stringify({"opinion": "DISLIKE"}),
         success: function () {
-            $('#' + brandId).closest('li').slideUp('slow');
+            $('#' + brandId).closest('li').fadeTo('slow',0.25);
         },
         error: function (data) {
             window.console.log('ERROR');
@@ -67,6 +68,7 @@ function articleLike (articleId) {
         data: JSON.stringify({"opinion": "LIKE"}),
         success: function () {
             $('#' + articleId).find('.dislikeArticle').fadeTo('slow',0);
+            $('#' + articleId).find('.likeArticle').addClass('liked');
         },
         error: function (data) {
             window.console.log('ERROR');
