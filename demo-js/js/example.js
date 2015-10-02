@@ -1,12 +1,24 @@
 var userProfile = {};
 
 /**
+ * refreshFeed
+ * 
+ * Removes previously added feed and replaces it with a fresh dataset. Call it after
+ * liking/disliking a product or brand to see the changes on the profile
+ */
+function refreshFeed() {
+    $('.myFeedList li, .feedCounter').remove();
+    getMyFeed();
+    $('#refreshFeed').hide();
+}
+
+/**
  * brandLike
  * 
  * Likes a brand and fades it out
  * @param brandId
  */
-function brandLike (brandId) {
+function brandLike(brandId) {
     $.ajax({
         type: "PUT",
         url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/brand%3A' + brandId,
@@ -16,6 +28,7 @@ function brandLike (brandId) {
         },
         data: JSON.stringify({"opinion": "LIKE"}),
         success: function () {
+            $('#refreshFeed').show();
             $('#' + brandId).find('.dislikeBrand').fadeTo('slow',0);
             $('#' + brandId).find('.likeBrand').addClass('liked');
         },
@@ -32,7 +45,7 @@ function brandLike (brandId) {
  * Dislikes the brand and fades out the brand
  * @param brandId
  */
-function brandDislike (brandId) {
+function brandDislike(brandId) {
     $.ajax({
         type: "PUT",
         url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/brand%3A' + brandId,
@@ -42,6 +55,7 @@ function brandDislike (brandId) {
         },
         data: JSON.stringify({"opinion": "DISLIKE"}),
         success: function () {
+            $('#refreshFeed').show();
             $('#' + brandId).closest('li').fadeTo('slow',0.25);
         },
         error: function (data) {
@@ -57,7 +71,7 @@ function brandDislike (brandId) {
  * Likes an article and removes dislike button
  * @param articleId
  */
-function articleLike (articleId) {
+function articleLike(articleId) {
     $.ajax({
         type: "PUT",
         url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/article%3A' + articleId,
@@ -67,6 +81,7 @@ function articleLike (articleId) {
         },
         data: JSON.stringify({"opinion": "LIKE"}),
         success: function () {
+            $('#refreshFeed').show();
             $('#' + articleId).find('.dislikeArticle').fadeTo('slow',0);
             $('#' + articleId).find('.likeArticle').addClass('liked');
         },
@@ -83,7 +98,7 @@ function articleLike (articleId) {
  * Dislikes an article and fades it out
  * @param articleId
  */
-function articleDislike (articleId) {
+function articleDislike(articleId) {
     $.ajax({
         type: "PUT",
         url: 'https://api.dz.zalan.do/customer-profiles/' + userProfile.feed_id + '/preferences/article%3A' + articleId,
@@ -93,6 +108,7 @@ function articleDislike (articleId) {
         },
         data: JSON.stringify({"opinion": "DISLIKE"}),
         success: function () {
+            $('#refreshFeed').show();
             $('#' + articleId).closest('li').fadeTo('slow',0.25);
         },
         error: function (data) {
@@ -109,7 +125,7 @@ function articleDislike (articleId) {
  * @param $element ul element to attach to
  * @param item brand object
  */
-function displayBrand ($element, item) {
+function displayBrand($element, item) {
     $element.append('<li><div class="brandContainer"><img src="' + item.brand.umage_url + '"></div>' + item.brand.name + 
         '<div class="opinion" id="' + item.id + '"><a class="dislikeBrand"></a><a class="likeBrand"></a></div></li>');
 }
@@ -134,7 +150,7 @@ function displayArticleComposition ($element, item) {
  * @param $element ul element to fill
  * @param item single article object
  */
-function displaySingleArticle ($element, item) {
+function displaySingleArticle($element, item) {
     $element.append('<li><img src="' + item.article.umage_url +
         '" alt="' + item.article.description + '">' +
         item.article.description + '<br>' + item.article.price.original_price.formatted +
@@ -172,11 +188,11 @@ function addLikeDislikeEvents() {
  * on an secured connection, else the images are unavailable
  * @param myFeed The Items in the response JSON
  */
-function displayMyFeed (myFeed) {
+function displayMyFeed(myFeed) {
     var $myFeed = $('.feed .detail');
     var $myFeedList = $('.myFeedList');
 
-    $myFeed.prepend('<p>Retrieved ' + myFeed.length + ' elements</p>');
+    $myFeed.prepend('<p class="feedCounter">Retrieved ' + myFeed.length + ' elements</p>');
 
     $.each(myFeed, function (index, item) {
         if (item.article_composition !== undefined) {
@@ -197,7 +213,7 @@ function displayMyFeed (myFeed) {
  * Retrieves the personal feed with brands, products, reco...
  * from the zalando myFeed API
  */
-function getMyFeed () {
+function getMyFeed() {
     $.ajax({
         type: "GET",
         url: "https://api.dz.zalan.do/feeds/" + userProfile.feed_id + "/items",
@@ -223,7 +239,7 @@ function getMyFeed () {
  * on an secured connection, else the images are unavailable
  * @param personalReco The Items in the response JSON
  */
-function displayPersonalReco (personalReco) {
+function displayPersonalReco(personalReco) {
     var $recoBrand = $('.recoBrands .detail');
     var $recoList = $('.recoList');
 
@@ -241,7 +257,7 @@ function displayPersonalReco (personalReco) {
  * Retrieves personalized recommendations
  * from the zalando myFeed API
  */
-function getPersonalReco () {
+function getPersonalReco() {
     $.ajax({
         type: "GET",
         url: "https://api.dz.zalan.do/feeds/" + userProfile.feed_id + "/sources/brand_reco/streams/personalized/items",
@@ -267,7 +283,7 @@ function getPersonalReco () {
  * on an secured connection, else the images are unavailable
  * @param topBrands The Items in the response JSON
  */
-function displayTopBrands (topBrands) {
+function displayTopBrands(topBrands) {
     var $topBrand = $('.topBrands .detail');
     var $topBrandList = $('.topBrandList');
     
@@ -285,7 +301,7 @@ function displayTopBrands (topBrands) {
  * Retrieves the not personalized top brands
  * from the zalando myFeed API
  */
-function getTopBrands () {
+function getTopBrands() {
     $.ajax({
         type: "GET",
         url: "https://api.dz.zalan.do/feeds/MALE/sources/brand_reco/streams/top/items",
@@ -310,7 +326,7 @@ function getTopBrands () {
  * Retrieves the profileinformation with feed id for
  * the currently authenticated user.
  */
-function getProfile () {
+function getProfile(useMeProfile) {
     $.ajax({
         type: "GET",
         url: "https://api.dz.zalan.do/auth/me",
@@ -320,7 +336,11 @@ function getProfile () {
         },
         success: function (data) {
             userProfile.email = data.email;
-            userProfile.feed_id = data.feed_id;
+            if (useMeProfile) {
+                userProfile.feed_id = 'me';
+            } else {
+                userProfile.feed_id = data.feed_id;
+            }
             userProfile.gender = data.gender;
             userProfile.name = data.name;
             $('.profileName').append(userProfile.name);
@@ -328,7 +348,7 @@ function getProfile () {
             $('.profileGender').append(userProfile.gender);
             $('.profileFeedId').append(userProfile.feed_id);
             $('.profile .detail, .recoBrands, .feed').fadeIn();
-            $('#getProfile').remove();
+            $('#getProfile, #meProfile').remove();
         },
         error: function (data) {
             window.console.log('ERROR');
@@ -344,7 +364,7 @@ function getProfile () {
  * in userProfile
  * @returns {boolean}
  */
-function login () {
+function login() {
     var username = $("#username").val();
     var password = $("#password").val();
     var base64encodedCredentials = btoa(username + ':' + password);
@@ -373,8 +393,14 @@ function login () {
 
 $(document).ready(function () {
     $('#login').on('click', login);
-    $('#getProfile').on('click', getProfile);
+    $('#getProfile').on('click', function () {
+        getProfile(false);
+    });
+    $('#meProfile').on('click', function () {
+        getProfile(true)
+    });
     $('#getTopBrands').on('click', getTopBrands);
     $('#getReco').on('click', getPersonalReco);
     $('#getFeed').on('click', getMyFeed);
+    $('#refreshFeed').on('click', refreshFeed);
 });

@@ -7,8 +7,9 @@
     <form action="./" method="post">
         <fieldset>
             <legend>Enter your username and password</legend>
-            <p>If you don't have a username at zalando, please register one at this place: <a href="https://www.zalando.de/login" title="Zalando Login Page">https://www.zalando.de/login</a>!</p>
-            <p class="infoBox"><strong>API Call</strong><br><br>
+            <p>If you don't have a username at zalando, please register one at this place: <a href="https://www.zalando.de/login" title="Zalando Login Page" target="_blank">https://www.zalando.de/login</a>!</p>
+            <p class="infoHeadline"><strong>API Call</strong></p>
+            <p class="infoBox">
                 type: "GET",<br>
                 url: "https://api.dz.zalan.do/auth/token",<br>
                 headers: {<br>
@@ -17,22 +18,25 @@
                 },</p>
             <label for="username">Username</label><input type="email" id="username" name="username">
             <label for="username">Password</label><input type="password" id="password" name="password">
-            <input type="submit" value="Login" id="login" name="login">
+            <button class="zalButton"  type="submit" id="login" name="login">Login</button>
         </fieldset>
     </form>
 </div>
 <div class="profile">
     <fieldset>
         <legend>Retrieve User Profile</legend>
-        <p>With the authentification token you are now able to retrieve the whole profile of the logged in user. Press 'Retrieve Profile'.</p>
-        <p class="infoBox"><strong>API Call</strong><br><br>
+        <p>With the authentification token you are now able to retrieve the whole profile of the logged in user. Press 'Retrieve Profile' to get the profile.</p>
+        <p>For testing purpose we offer you an prepared profile. It's the ME profile and replaces the profile ID in all API calls, which are personalized. Click on 'Use 'ME Profile' to use this example profile instead of your own.</p>
+        <p class="infoHeadline"><strong>API Call</strong></p>
+        <p class="infoBox">
             type: "GET",<br>
             url: "https://api.dz.zalan.do/auth/me",<br>
             headers: {<br>
             &nbsp; 	&nbsp; 	&nbsp;Accept: "application/x.zalando.myfeed+json;version=2",<br>
             &nbsp; 	&nbsp; 	&nbsp;Authorization: userProfile.access_type + " " + userProfile.access_token<br>
             },</p>
-        <button id="getProfile">Retrieve Profile</button>
+        <button class="zalButton"  id="getProfile">Retrieve Profile</button>
+        <button class="zalButton"  id="meProfile">Use 'ME' Profile</button>
         <div class="detail">
             <ul>
                 <li class="profileName"><strong>Name: </strong></li>
@@ -47,14 +51,15 @@
     <fieldset>
         <legend>General Topbrands</legend>
         <p>Get the general top brands from Zalando.</p>
-        <p class="infoBox"><strong>API Call</strong><br><br>
+        <p class="infoHeadline"><strong>API Call</strong></p>
+        <p class="infoBox">
             type: "GET",<br>
             url: "https://api.dz.zalan.do/feeds/MALE/sources/brand_reco/streams/top/items",<br>
             headers: {<br>
             &nbsp; 	&nbsp; 	&nbsp;Accept: "application/x.zalando.myfeed+json;version=2",<br>
             &nbsp; 	&nbsp; 	&nbsp;Authorization: userProfile.access_type + " " + userProfile.access_token<br>
             },</p>
-        <button id="getTopBrands">Display Top Brands</button>
+        <button class="zalButton"  id="getTopBrands">Display Top Brands</button>
         <div class="detail">
             <ul class="topBrandList">
             </ul>
@@ -65,33 +70,35 @@
     <fieldset>
         <legend>Personal Brand Recommendations</legend>
         <p>Get personal brand recommendations for the user, based on his profile.You first have to get the user profile.</p>
-        <p class="infoBox"><strong>API Call</strong><br><br>
+        <p class="infoHeadline"><strong>API Call</strong></p>
+        <p class="infoBox">
             type: "GET",<br>
             url: "https://api.dz.zalan.do/feeds/" + userProfile.feed_id + "/sources/brand_reco/streams/personalized/items",<br>
             headers: {<br>
             &nbsp; 	&nbsp; 	&nbsp;Accept: "application/x.zalando.myfeed+json;version=2",<br>
             &nbsp; 	&nbsp; 	&nbsp;Authorization: userProfile.access_type + " " + userProfile.access_token<br>
             },</p>
-        <button id="getReco">Display Personal Recommendations</button>
+        <button class="zalButton"  id="getReco">Display Personal Recommendations</button>
         <div class="detail">
             <ul class="recoList">
             </ul>
         </div>
-    </fieldset>git status
-    
+    </fieldset>
 </div>
 <div class="feed">
     <fieldset>
         <legend>myFeed</legend>
         <p>Display the feed with brands, products, looks and all the features. User profile is needed</p>
-        <p class="infoBox"><strong>API Call</strong><br><br>
+        <p class="infoHeadline"><strong>API Call</strong></p>
+        <p class="infoBox">
             type: "GET",<br>
             url: "https://api.dz.zalan.do/feeds/" + userProfile.feed_id + "/items",<br>
             headers: {<br>
             &nbsp; 	&nbsp; 	&nbsp;Accept: "application/x.zalando.myfeed+json;version=2",<br>
             &nbsp; 	&nbsp; 	&nbsp;Authorization: userProfile.access_type + " " + userProfile.access_token<br>
             },</p>
-        <button id="getFeed">Display myFeed</button>
+        <button class="zalButton" id="getFeed">Display myFeed</button>
+        <button class="zalButton"  id="refreshFeed">Refresh myFeed</button>
         <div class="detail">
             <ul class="myFeedList">
             </ul>
