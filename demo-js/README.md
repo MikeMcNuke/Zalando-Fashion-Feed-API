@@ -1,2 +1,4 @@
 # zalando_myFeed_API_Example
 A short example on the myFeed API from zalando - get fashionated!
+
+You can see the demo running here [here](http://myfeed.visualimg.de).
